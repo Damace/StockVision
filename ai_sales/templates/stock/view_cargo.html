@@ -1,0 +1,175 @@
+{% extends 'base.html' %} {% block content %} {% include 'include/header.html'%}
+{% include 'include/sidebar.html' %}
+
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">
+        <i class="fa fa-cubes text-danger icon-lg"></i> Cargo list
+      </h3>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Stock list</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-0">
+              <strong style="color: grey">Total imported items</strong>
+            </h4>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-inline-block pt-3">
+                <div class="d-md-flex">
+                  <h2 class="mb-0">{{purchased_items}}</h2>
+                  <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
+                    <i class="far fa-clock text-muted"></i>
+                    <small class="ml-1 mb-0">Updated: 9:10am</small>
+                  </div>
+                </div>
+                <small class="text-gray"></small>
+              </div>
+              <div class="d-inline-block">
+                <i class="fa fa-cubes text-primary icon-md"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-0"><strong style="color: grey">Registered Suppliers</strong></h4>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-inline-block pt-3">
+                <div class="d-md-flex">
+                  <h2 class="mb-0">{{supplier}}</h2>
+                  <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
+                    <i class="far fa-clock text-muted"></i>
+                    <small class="ml-1 mb-0">Updated: 05:42pm</small>
+                  </div>
+                </div>
+                <small class="text-gray"></small>
+              </div>
+              <div class="d-inline-block">
+                <i class="fa fa-truck text-primary icon-md"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <li class="nav-item dropdown d-none d-lg-flex">
+              <div class="nav-link">
+                <span
+                  class="dropdown-toggle btn btn-primary mb-3 float-end"
+                  id="languageDropdown"
+                  data-toggle="dropdown"
+                  >My Cargo</span
+                >
+                <div
+                  class="dropdown-menu navbar-dropdown"
+                  aria-labelledby="languageDropdown"
+                >
+                  <a
+                    class="dropdown-item font-weight-medium"
+                    href="/add_product"
+                    style="cursor: pointer"
+                  >
+                    <i class="fas fa-plus-circle"></i>&nbsp Add Card
+                  </a>
+
+                  <div class="dropdown-divider"></div>
+                  <a
+                    class="dropdown-item font-weight-medium"
+                    href="/generate_pdf_report"
+                  >
+                    <i class="fas fa-file-alt"></i>&nbsp Get cargo report
+                  </a>
+                </div>
+              </div>
+
+              
+            <div class="col-sm-12 col-md-12 col-lg-10" align="right" style="cursor:pointer">
+              <a href="" class="btn btn-outline-info btn-sm"><i class="fa fa-history"></i> Refresh</a></button>
+               </div>
+
+            </li>
+
+
+
+
+
+
+            <div class="table-responsive">
+              <table id="order-listing" class="table">
+                <thead>
+                  <tr>
+                    <th><small style="font-weight: bold">Cargo Name</small></th>
+                    <th>
+                      <small style="font-weight: bold">Importer Name</small>
+                    </th>
+                    <th>
+                      <small style="font-weight: bold">Arrival Date</small>
+                    </th>
+                    <th><small style="font-weight: bold">Total Cost</small></th>
+                    <th>
+                      <small style="font-weight: bold">Amount Paid</small>
+                    </th>
+                    <th>
+                      <small style="font-weight: bold">Balance Due</small>
+                    </th>
+                    <th>
+                      <small style="font-weight: bold">Payment Status</small>
+                    </th>
+                    {% comment %}
+                    <th>Actions</th>
+                    {% endcomment %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for cargo in cargos %}
+                  <tr>
+                    <td>{{ cargo.cargo_name }}</td>
+                    <td>{{ cargo.importer_name }}</td>
+                    <td>{{ cargo.arrival_date }}</td>
+                    <td>{{ cargo.total_cost }}</td>
+                    <td>{{ cargo.amount_paid }}</td>
+                    <td>{{ cargo.balance_due }}</td>
+                    <td>{{ cargo.get_payment_status_display }}</td>
+                    {% comment %}
+                    <td>
+                      <a
+                        href="{% url 'update_cargo' cargo.id %}"
+                        class="btn btn-warning btn-sm"
+                        >Update</a
+                      >
+                      <a
+                        href="{% url 'delete_cargo' cargo.id %}"
+                        class="btn btn-danger btn-sm"
+                        >Delete</a
+                      >
+                    </td>
+                    {% endcomment %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+</div>

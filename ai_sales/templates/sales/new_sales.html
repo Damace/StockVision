@@ -1,0 +1,277 @@
+{% extends 'base.html' %} {% block content %} {% include 'include/header.html'%}
+{% include 'include/sidebar.html' %}
+
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="col-12 grid-margin">
+      <h3 class="page-title">
+        <i class="fas fa-plus-circle"></i>
+        <small><strong>New Sales</strong></small>
+      </h3>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body"></div>
+
+          <div class="jumping-dots-loader" id="loading_sign"
+           style="display: none"
+          class="alert alert-success mt-3 ">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+
+          
+
+          <div class="modal-body">
+            <div
+              id="success_message"
+              style="display: none"
+              class="alert alert-success mt-3 form-control"
+            >
+            <strong>🎉 Sales Submitted Successfully! 🎉</strong>
+            </div>
+            <div
+              id="danger_message"
+              style="display: none"
+              class="alert alert-danger mt-3"
+            >
+            <strong>⚠️ Something Already Exists! ⚠️</strong>
+            </div>
+
+
+
+
+
+
+
+          <div class="col-12 grid-margin">
+            <div class="card">
+              <div class="card-body">
+                <form class="form-sample" id="add-product-form">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Customer:</label>
+                        <div class="col-sm-9">
+                          <input
+                            class="form-control"
+                            type="text"
+                            name="customer"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Product <spam style="color:red">* </span></label>
+                        <div class="col-sm-9">
+                          <select
+                            id="product-select"
+                            class="js-example-basic-single w-100"
+                            name="product"
+                          >
+                            <option value="">-- Select Product --</option>
+                            {% for product in products %}
+                            <option
+                              value="{{ product.id }}"
+                              data-price="{{ product.selling_price }}"
+                            >
+                              {{ product.product_name }}
+                            </option>
+                            {% endfor %}
+
+                            required
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Price <spam style="color:red">* </span></label>
+                        <div class="col-sm-9">
+                          <input
+                            type="text"
+                            class="form-control"
+                            name="price"
+                            id="product-price"
+                            readonly
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Discount:</label>
+                        <div class="col-sm-9">
+                          <input
+                            class="form-control"
+                            type="number"
+                            min="0"
+                            step="0"
+                            value="0"
+                            name="discount"
+                            id="discount"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Quantity: <spam style="color:red">* </span></label>
+                        <div class="col-sm-9">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="quantity"
+                            min="1"
+                            step="1"
+                            required
+                            id="quantity"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"
+                          >Total Cost </label
+                        >
+                        <div class="col-sm-9">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="total_cost"
+                            id="total-cost"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group row">
+                        <label class="col-sm-3 col-form-label"
+                          >Payment Mths:</label
+                        >
+                        <div class="col-sm-9">
+                          <select
+                            class="js-example-basic-single w-100"
+                            name="payment_method"
+                            id="payment-method"
+                          >
+                            <option value="Cash">Cash</option>
+                            <option value="Card">Card</option>
+                            <option value="Mobile Money">Mobile Money</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                      <div class='row'>
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label"></label>
+                          <div class="col-sm-9">
+                            <button type="submit" class="btn btn-primary mr-2">
+                              Save
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label"></label>
+                          <div class="col-sm-9"> <a href="/all_sales">
+                            <button type="button" class="btn btn-primary mr-2">
+                              All Sales
+                            </button>
+                          </a>
+                          </div>
+                        </div>
+
+                 
+                          </div>
+                        </div>
+
+                      </div>
+                      
+                     
+                    </div>
+                  </div>
+                </form>
+
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                  $(document).ready(function () {
+                    // Auto-fill price when selecting a product
+                    $("#product-select").change(function () {
+                      let price = $(this).find(":selected").data("price");
+                      $("#product-price").val(price);
+                      calculateTotal();
+                    });
+
+                    // Calculate total cost
+                    $("#quantity, #discount").on("input", function () {
+                      calculateTotal();
+                    });
+
+                    function calculateTotal() {
+                      let price = parseFloat($("#product-price").val()) || 0;
+                      let quantity = parseInt($("#quantity").val()) || 0;
+                      let discount = parseFloat($("#discount").val()) || 0;
+                      let total = price * quantity - discount;
+                      $("#total-cost").val(total >= 0 ? total.toFixed(2) : 0);
+                    }
+
+                    // AJAX form submission
+                    $("#add-product-form").submit(function (e) {
+                      $("#loading_sign").show();
+                      e.preventDefault();
+
+                      $.ajax({
+                        type: "POST",
+                        url: "{% url 'add_sale' %}", // Update with your Django view URL
+                        data: $(this).serialize(),
+                        headers: { "X-CSRFToken": "{{ csrf_token }}" }, // CSRF token for security
+                        success: function (response) {
+                          $("#loading_sign").hide();
+                          $("#success_message").show().delay(3000).fadeOut();
+                          $("#add-product-form")[0].reset(); // Reset form
+                        },
+                        error: function (error) {
+                          $("#loading_sign").hide();
+                          $("#danger_message").show().delay(3000).fadeOut();
+                        },
+                      });
+                    });
+                  });
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% endblock %}
+    </div>
+  </div>
+</div>

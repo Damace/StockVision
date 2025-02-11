@@ -1,0 +1,273 @@
+{% extends 'base.html' %} {% block content %} {% include 'include/header.html'%}
+{% include 'include/sidebar.html' %}
+
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">
+        <i class="fa fa-shopping-cart me-2" style="color: pink"></i> All Sales
+      </h3>
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">All Sales</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-0">Total items</h4>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-inline-block pt-3">
+                <div class="d-md-flex">
+                  <h2 class="mb-0">$10,200</h2>
+                  <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
+                    <i class="far fa-clock text-muted"></i>
+                    <small class="ml-1 mb-0">Updated: 9:10am</small>
+                  </div>
+                </div>
+                <small class="text-gray">Raised from 89 orders.</small>
+              </div>
+              <div class="d-inline-block">
+                <i class="fas fa-chart-pie text-info icon-lg"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-0">Total Sales</h4>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-inline-block pt-3">
+                <div class="d-md-flex">
+                  <h2 class="mb-0">$2256</h2>
+                  <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
+                    <i class="far fa-clock text-muted"></i>
+                    <small class="ml-1 mb-0">Updated: 05:42pm</small>
+                  </div>
+                </div>
+                <small class="text-gray">hey, let’s have lunch together</small>
+              </div>
+              <div class="d-inline-block">
+                <i class="fas fa-shopping-cart text-danger icon-lg"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 grid-margin stretch-card">
+      <div
+        class="modal fade"
+        id="exampleModal-2"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel-2"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4><i class="fas fa-plus-circle"></i> New Sales</h4>
+            </div>
+            <div class="modal-body">
+
+              <form id="sale-form" class="form-sample">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Customer <span style="color: red;">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="customer_name" id="customer_name" placeholder="Enter customer name" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Product Name <span style="color: red;">*</span></label>
+                            <div class="col-sm-9">
+                              <select
+                                class="js-example-basic-single w-100"
+                                id="category-select"
+                                name="category"
+                              >
+                                <option value="">-- Select a Category --</option>
+                                {% for product in products %}
+                                <option value="{{ product.id }}">
+                                  {{ product.name }}
+                                </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Price <span style="color: red;">*</span></label>
+                            <div class="col-sm-9">
+                                <input class="form-control" name="price" id="price" placeholder="Enter price" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Quantity <span style="color: red;">*</span></label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="quantity" id="quantity" placeholder="Enter quantity" required />
+                    </div>
+                </div>
+            
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Discount</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="discount" id="discount" placeholder="Enter discount percentage" />
+                    </div>
+                </div>
+            
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Total</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="total" id="total" placeholder="Total amount" readonly />
+                    </div>
+                </div>
+            
+                <button type="submit" class="btn btn-primary">Submit Sale</button>
+            </form>
+
+              <!-- Success Message -->
+              <div
+              id="success_message"
+              style="display: none"
+              class="alert alert-success mt-3 form-control"
+            >
+              Category added successfully!
+            </div>
+            <div
+              id="danger_message"
+              style="display: none"
+              class="alert alert-danger mt-3"
+            >
+              Category Exists
+            </div>
+            
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            
+              
+            <script>
+              $(document).ready(function () {
+                // Handle form submission
+                $("#sale-form").on("submit", function (event) {
+                  event.preventDefault(); // Prevent the form from submitting normally
+            
+                  // Get the form data
+                  var formData = $(this).serialize();
+            
+                  // Get CSRF token
+                  var csrf_token = $('input[name="csrfmiddlewaretoken"]').val();
+            
+                  // Send the form data via AJAX
+                  $.ajax({
+                    url: "{% url 'create_sale' %}",  // URL to your Django view handling the form
+                    type: "POST",
+                    data: formData,
+                    headers: {
+                      "X-CSRFToken": csrf_token,  // Set the CSRF token in the request header
+                    },
+                    success: function (response) {
+                      if (response.status == 'success') {
+                        $("#success_message").show().delay(3000).fadeOut();  // Show success message
+                        $("#sale-form")[0].reset();  // Reset the form fields
+                        // Optionally, update the product list or perform other actions
+                      } else {
+                        alert("Error submitting sale: " + response.message);  // Show error message
+                      }
+                    },
+                    error: function () {
+                      $("#danger_message").show().delay(3000).fadeOut();  // Show error message
+                    },
+                  });
+                });
+              });
+            </script>
+            
+          
+          
+
+
+
+
+
+
+
+
+               
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success">Submit</button>
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4
+                class="btn btn-primary mb-3 float-end"
+              >
+                <i class="fas fa-plus-circle"></i> New Sales
+              </h4>
+
+              <div class="table-responsive">
+              
+
+             
+                <h2>Sales Trends Over the Year</h2>
+                <img src="{{ graph }}" alt="Sales Trends Graph">
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+</div>

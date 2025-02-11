@@ -1,0 +1,212 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+      <li class="nav-item nav-profile">
+        <div class="nav-link">
+          
+          <div class="profile-name">
+            <p class="name">    
+{% if user.is_authenticated %}
+    <h6> <strong>Welcome, {{ user.username }}! &nbsp&nbsp <i class="fa fa-circle" style="color:green"></i></strong></h6>
+{% else %}
+<a ref="/"></a>
+{% endif %} </p>
+            <p class="designation">
+           
+            </p>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">
+          <i class="fa fa-home menu-icon" style="color:purple"></i>
+          <span class="menu-title"> <b>Dashboard</b></span>
+        </a>
+      </li>
+      <li class="nav-item">  
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#page-layouts" aria-expanded="false" aria-controls="page-layouts">
+          <i class="fab fa-trello menu-icon" style="color:purple"></i>
+          <span class="menu-title"><b>Sales</b></span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="page-layouts">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item d-none d-lg-block">
+                <a class="nav-link" href="/all_sales">
+                  ➤  All Sales
+                </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/new_sales">
+                ➤  New Sales
+              </a>
+          </li>
+            {% comment %} <li class="nav-item">
+                <a class="nav-link" href="pages/layout/rtl-layout.html">
+                  ➤  Orders
+                </a>
+            </li> {% endcomment %}
+
+             {% comment %}
+            <li class="nav-item">
+                <a class="nav-link" href="pages/layout/rtl-layout.html">
+                  ➤  Payments
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="pages/layout/rtl-layout.html">
+                  ➤  Invoice
+                </a>
+            </li>
+        {% endcomment %}
+          
+        </ul>
+        </div>
+      </li>
+
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#ui-advanced" aria-expanded="false" aria-controls="ui-advanced">
+          <i class="fas fa-clipboard-list menu-icon" style="color:purple"></i>
+          <span class="menu-title"><strong>Expenses</strong></span>
+
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="ui-advanced">
+          <ul class="nav flex-column sub-menu">
+          
+            <li class="nav-item">
+                <a class="nav-link" href="/expenses">
+                  ➤ Expenses list
+                </a>
+            </li>
+           
+           
+        </ul>
+        
+        </div>
+      </li>
+
+  
+
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+          <i class="fas fa-chart-pie menu-icon" style="color:purple"></i>
+          <span class="menu-title"><strong>Debts Management</strong></span>
+
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="charts">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+              <a class="nav-link" href="/my_debt_list">
+                ➤ My debts
+              </a>
+          </li>
+           
+          <li class="nav-item">
+              <a class="nav-link" href="/supplier">
+                ➤ Supplier debts
+              </a>
+          </li>
+         
+         
+
+          </ul>
+          </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
+          <i class="fas fa-table menu-icon" style="color:purple"></i>
+          <span class="menu-title"><strong>Reports & Analysis</strong></span>
+
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="tables">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="/download-stock-report" target ="_blank">➤ Stock Reports </a></li>
+            <li class="nav-item"> <a class="nav-link" href="/generate_pdf_report" target ="_blank">➤ Cargo Reports</a></li>
+            <li class="nav-item"> <a class="nav-link" href="/sales-report" target ="_blank">➤ Sales Reports </a></li>
+            <li class="nav-item"> <a class="nav-link" href="pages/tables/js-grid.html" target ="_blank">➤ Expenditures Reports</a></li>  
+            <li class="nav-item"> <a class="nav-link" href="pages/tables/js-grid.html" target ="_blank">➤ General Report</a></li>
+          </ul>
+        </div>
+      </li>
+
+
+            
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+          <i class="far fa-compass menu-icon" style="color:purple"></i>
+          <span class="menu-title"><strong>Stock Management</strong></span>
+
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="ui-basic">
+          <ul class="nav flex-column sub-menu">
+
+            <li class="nav-item">
+              <a class="nav-link" href="/supplier_list">
+                ➤ Supplier
+              </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="/view_cargo">
+              ➤ Cargos List
+            </a>
+        </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/products/">
+                ➤ Stock List
+              </a>
+          </li>    
+          </ul>
+          </div>
+      </li>
+
+
+
+
+      
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
+          <i class="fa fa-stop-circle menu-icon" style="color:purple"></i>
+          <span class="menu-title"><strong>Settings</strong></span>
+
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="icons">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="/company_profile">➤ Company Profile</a></li>
+             <li class="nav-item"> <a class="nav-link" href="/">➤ Log Out</a></li>
+        
+           
+          </ul>
+        </div>
+
+
+            {% comment %} <!-- button to trigger the backup -->
+            <form action="{% url 'backup_data' %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary">
+                Create Database Backup
+              </button>
+            </form> {% endcomment %}
+
+
+
+      </li>
+      
+
+
+
+    </ul>
+  </nav>

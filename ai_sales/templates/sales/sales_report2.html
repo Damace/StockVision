@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sales Report</title>
+</head>
+<body>
+    <h2>Sales Reports</h2>
+
+    <h3>Daily Sales (Today): ${{ daily_total }}</h3>
+    <ul>
+        {% for sale in daily_sales %}
+            <li>{{ sale.date }} - {{ sale.customer }} bought {{ sale.quantity }} {{ sale.product.name }} for ${{ sale.total_amount }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Weekly Sales (This Week): ${{ weekly_total }}</h3>
+    <ul>
+        {% for sale in weekly_sales %}
+            <li>{{ sale.date }} - {{ sale.customer }} bought {{ sale.quantity }} {{ sale.product.name }} for ${{ sale.total_amount }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Monthly Sales (This Month): ${{ monthly_total }}</h3>
+    <ul>
+        {% for sale in monthly_sales %}
+            <li>{{ sale.date }} - {{ sale.customer }} bought {{ sale.quantity }} {{ sale.product.name }} for ${{ sale.total_amount }}</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h3>Sales Report by Date Range</h3>
+    <form method="GET">
+        {{ form.as_p }}
+        <button type="submit">Generate Report</button>
+    </form>
+
+    {% if date_range_sales is not None %}
+        <h3>Total Sales in Selected Date Range: ${{ date_range_total }}</h3>
+        <ul>
+            {% for sale in date_range_sales %}
+                <li>{{ sale.date }} - {{ sale.customer }} bought {{ sale.quantity }} {{ sale.product.name }} for ${{ sale.total_amount }}</li>
+            {% endfor %}
+        </ul>
+
+        <hr>
+
+        <h3>Itemized Sales Report for Selected Date Range</h3>
+        <table border="1">
+            <tr>
+                <th>Product</th>
+                <th>Total Quantity Sold</th>
+                <th>Total Sales Amount</th>
+            </tr>
+            {% for item in itemized_sales %}
+            <tr>
+                <td>{{ item.product__name }}</td>
+                <td>{{ item.total_quantity }}</td>
+                <td>${{ item.total_sales }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    <hr>
+
+    <h2>Full Sales Report</h2>
+    <table border="1">
+        <tr>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Discount</th>
+            <th>Total</th>
+            <th>Payment Status</th>
+            <th>Payment Method</th>
+        </tr>
+        {% for sale in all_sales %}
+        <tr>
+            <td>{{ sale.date }}</td>
+            <td>{{ sale.customer }}</td>
+            <td>{{ sale.product.name }}</td>
+            <td>{{ sale.quantity }}</td>
+            <td>${{ sale.price }}</td>
+            <td>${{ sale.discount }}</td>
+            <td>${{ sale.total_amount }}</td>
+            <td>{{ sale.payment_status }}</td>
+            <td>{{ sale.payment_method }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

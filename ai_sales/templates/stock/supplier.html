@@ -1,0 +1,328 @@
+{% extends 'base.html' %} {% block content %} {% include 'include/header.html'%}
+{% include 'include/sidebar.html' %}
+
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">
+        <i class="fa fa-users text-info icon-lg"></i> Suppliers List
+        
+      </h3>
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            All Suppliers
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-0"><strong style="color:gray">Total suppliers</strong></h4>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-inline-block pt-3">
+                <div class="d-md-flex">
+                  <h2 class="mb-0">{{number_supplier}}</h2>
+                  <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
+                    <i class="far fa-clock text-muted"></i>
+                    <small class="ml-1 mb-0">Updated: 9:10am</small>
+                  </div>
+                </div>
+                <small class="text-gray"></small>
+              </div>
+              <div class="d-inline-block">
+                <i class="fa fa-truck  icon-md"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-0"><strong style="color:gray">Total sales</strong></h4>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-inline-block pt-3">
+                <div class="d-md-flex">
+                  <h2 class="mb-0">{{total_sales}}</h2>
+                  <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
+                    <i class="far fa-clock text-muted"></i>
+                    <small class="ml-1 mb-0">Updated: 05:42pm</small>
+                  </div>
+                </div>
+                <small class="text-gray"></small>
+              </div>
+              <div class="d-inline-block">
+                <i class="fas fa-shopping-cart text-success icon-md"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 grid-margin stretch-card">
+      <div
+        class="modal fade"
+        id="exampleModal-2"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel-2"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4> <i class="fa fa-users"></i> New Supplier</h4>
+            </div>
+
+            
+
+
+      
+              <div class="jumping-dots-loader" id="loading_sign"
+              style="display: none"
+              class="alert alert-success mt-3 form-control">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              
+          
+
+
+            <div class="modal-body">
+              <div
+                id="success_message"
+                style="display: none"
+                class="alert alert-success mt-3 form-control"
+              >
+                Supplier added successfully!
+              </div>
+              <div
+                id="danger_message"
+                style="display: none"
+                class="alert alert-danger mt-3"
+              >
+                Something Existing
+              </div>
+
+              <form id="sale-form" class="form-sample">
+                {% csrf_token %}
+
+                <!-- Supplier Name -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label"
+                        >Supplier <span style="color: red">*</span></label
+                      >
+                      <div class="col-sm-9">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="customer_name"
+                          id="customer_name"
+                          placeholder="Enter supplier name"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label"
+                        >Email <span style="color: red">*</span></label
+                      >
+                      <div class="col-sm-9">
+                        <input
+                          type="email"
+                          class="form-control"
+                          name="contact_email"
+                          id="email"
+                          placeholder="Enter email address"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label"
+                        >Phone Number <span style="color: red">*</span></label
+                      >
+                      <div class="col-sm-9">
+                        <input
+                          type="tel"
+                          class="form-control"
+                          name="phone_number"
+                          id="phone_number"
+                          placeholder="Enter phone number"
+                          required
+                          pattern="[0-9]{10,15}"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Address -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label">Address</label>
+                      <div class="col-sm-9">
+                        <input
+                          type="text"
+                          class="form-control"
+                          name="address"
+                          id="address"
+                          placeholder="Enter address"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+
+                <div class="row">
+                  <div class="col-md-12 text-right">
+                    <button
+                      type="button"
+                      class="btn btn-light"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                      Save Supplier
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              
+               
+                 
+              
+
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                  $(document).ready(function () {
+                    $("#sale-form").on("submit", function (event) {
+                      $("#loading_sign").show();
+                      event.preventDefault(); // Prevent default form submission
+
+                      var formData = $(this).serialize(); // Serialize form data
+                      var csrf_token = $(
+                        "input[name='csrfmiddlewaretoken']"
+                      ).val(); // Get CSRF token
+
+                      $.ajax({
+                        url: "{% url 'save_supplier' %}",
+                        type: "POST",
+                        data: formData,
+                        headers: {
+                          "X-CSRFToken": csrf_token, // Include CSRF token in header
+                        },
+                        success: function (response) {
+                          if (response.status === "success") {
+                            $("#loading_sign").hide();
+                            $("#success_message").show().delay(3000).fadeOut(); // Show success message
+                            $("#sale-form")[0].reset(); // Reset the form
+                          } else {
+                            alert("Error: " + response.message);
+                          }
+                        },
+                        error: function () {
+                          $("#danger_message").show().delay(3000).fadeOut(); // Show success message
+                        },
+                      });
+                    });
+                  });
+                </script>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+
+               <div class="row">
+
+              <h4
+                class="btn btn-primary mb-3 float-end"
+                data-toggle="modal"
+                data-target="#exampleModal-2"
+              >
+                <i class="fas fa-plus-circle"></i> New Supplier
+              </h4>
+
+           
+                
+              <div class="col-sm-12 col-md-12 col-lg-9" align="right" style="cursor:pointer">
+              <a href="" class="btn btn-outline-info btn-sm"><i class="fa fa-history"></i> Refresh</a></button>
+               </div>
+
+
+              
+              </a>
+
+            </div>
+
+              <div class="table-responsive">
+                <table id="order-listing" class="table">
+                  <thead>
+                    <tr>
+                      <th>Full name</th>
+                      <th>Email</th>
+                      <th>Phone number</th>
+                      <th>Address</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for supplier in supplier %}
+                    <tr>
+                      <td>{{ supplier.name }}</td>
+                      <td>{{ supplier.contact_email}}</td>
+
+                      <td>{{ supplier.phone_number}}</td>
+
+                      <td>{{ supplier.address}}</td>
+                    </tr>
+
+                    {% empty %}
+                    <tr>
+                      <td colspan="9">No products available.</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+</div>
