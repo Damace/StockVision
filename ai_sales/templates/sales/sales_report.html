@@ -6,7 +6,7 @@
   <div class="content-wrapper">
     <div class="page-header">
       <h3 class="page-title">
-        <i class="fa fa-shopping-cart me-2" style="color: pink"></i> All Sales
+        <i class="fa fa-shopping-cart text-danger md-lg"></i> Sales report
       </h3>
 
       <nav aria-label="breadcrumb">
@@ -21,20 +21,20 @@
       <div class="col-md-6 grid-margin">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title mb-0">Total items</h4>
+            <h4 class="card-title mb-0"><strong style="color:grey">Total Sales</strong></h4>
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-inline-block pt-3">
                 <div class="d-md-flex">
-                  <h2 class="mb-0">$10,200</h2>
+                  <h2 class="mb-0">{{total_sales}}</h2>
                   <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
                     <i class="far fa-clock text-muted"></i>
                     <small class="ml-1 mb-0">Updated: 9:10am</small>
                   </div>
                 </div>
-                <small class="text-gray">Raised from 89 orders.</small>
+                <small class="text-gray"></small>
               </div>
               <div class="d-inline-block">
-                <i class="fas fa-chart-pie text-info icon-lg"></i>
+                <i class="fa fa-shopping-cart text-success icon-md"></i>
               </div>
             </div>
           </div>
@@ -43,17 +43,17 @@
       <div class="col-md-6 grid-margin">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title mb-0">Total Sales</h4>
+            <h4 class="card-title mb-0"><strong style="color:grey">Stock quantity </strong></h4>
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-inline-block pt-3">
                 <div class="d-md-flex">
-                  <h2 class="mb-0">$2256</h2>
+                  <h2 class="mb-0">{{products_list}}</h2>
                   <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
                     <i class="far fa-clock text-muted"></i>
                     <small class="ml-1 mb-0">Updated: 05:42pm</small>
                   </div>
                 </div>
-                <small class="text-gray">hey, let’s have lunch together</small>
+                <small class="text-gray"></small>
               </div>
               <div class="d-inline-block">
                 <i class="fas fa-shopping-cart text-danger icon-lg"></i>
@@ -205,18 +205,6 @@
                 });
               });
             </script>
-            
-          
-          
-
-
-
-
-
-
-
-
-               
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-success">Submit</button>
@@ -237,102 +225,92 @@
         <div class="col-lg-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-              <h4
-                class="btn btn-primary mb-3 float-end"
-              >
-                <i class="fas fa-plus-circle"></i> New Sales
-              </h4>
 
-              <div class="table-responsive">
-           
 
-                <h2>Sales Reports</h2>
+              <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Select date Ranges</h4>
+                    <p class="card-description"></p>
 
-                <h3>Daily Sales (Today): ${{ daily_total }}</h3>
-                <ul>
-                    {% for sale in daily_sales %}
-                        <li>{{ sale.date }} - {{ sale.customer }} bought {{ sale.quantity }} {{ sale.product.name }} for ${{ sale.total_amount }}</li>
-                    {% endfor %}
-                </ul>
-            
-                <h3>Weekly Sales (This Week): ${{ weekly_total }}</h3>
-                <ul>
-                    {% for sale in weekly_sales %}
-                        <li>{{ sale.date }} - {{ sale.customer }} bought {{ sale.quantity }} {{ sale.product.name }} for ${{ sale.total_amount }}</li>
-                    {% endfor %}
-                </ul>
-            
-                <h3>Monthly Sales (This Month): ${{ monthly_total }}</h3>
-                <ul>
-                    {% for sale in monthly_sales %}
-                        <li>{{ sale.date }} - {{ sale.customer }} bought {{ sale.quantity }} {{ sale.product.name }} for ${{ sale.total_amount }}</li>
-                    {% endfor %}
-                </ul>
-            
-                <hr>
-            
-                <h3>Sales Report by Date Range</h3>
-                <form method="GET">
-                    {{ form.as_p }}
-                    <button type="submit">Generate Report</button>
-                </form>
-            
-                {% if date_range_sales is not None %}
-                    <h3>Total Sales in Selected Date Range: ${{ date_range_total }}</h3>
-                    <ul>
-                        {% for sale in date_range_sales %}
-                            <li>{{ sale.date }} - {{ sale.customer }} bought {{ sale.quantity }} {{ sale.product.name }} for ${{ sale.total_amount }}</li>
-                        {% endfor %}
-                    </ul>
-            
-                    <hr>
-            
-                    <h3>Itemized Sales Report for Selected Date Range</h3>
-                    <table border="1">
-                        <tr>
-                            <th>Product</th>
-                            <th>Total Quantity Sold</th>
-                            <th>Total Sales Amount</th>
-                        </tr>
-                        {% for item in itemized_sales %}
-                        <tr>
-                            <td>{{ item.product__name }}</td>
-                            <td>{{ item.total_quantity }}</td>
-                            <td>${{ item.total_sales }}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                {% endif %}
-            
-                <hr>
-            
-                <h2>Full Sales Report</h2>
-                <table border="1">
-                    <tr>
-                        <th>Date</th>
-                        <th>Customer</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Discount</th>
-                        <th>Total</th>
-                        <th>Payment Status</th>
-                        <th>Payment Method</th>
-                    </tr>
-                    {% for sale in all_sales %}
-                    <tr>
-                        <td>{{ sale.date }}</td>
-                        <td>{{ sale.customer }}</td>
-                        <td>{{ sale.product.name }}</td>
-                        <td>{{ sale.quantity }}</td>
-                        <td>${{ sale.price }}</td>
-                        <td>${{ sale.discount }}</td>
-                        <td>${{ sale.total_amount }}</td>
-                        <td>{{ sale.payment_status }}</td>
-                        <td>{{ sale.payment_method }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
+
+                    <form id="salesReportForm" class="form-inline">
+                      {% csrf_token %}
+                      
+                      <div class="input-group date datepicker mr-2">
+                          <input type="text" id="datepicker-start" name="start_date" class="form-control" placeholder="From">
+                          <span class="input-group-addon input-group-append border-left">
+                              <span class="far fa-calendar input-group-text"></span>
+                          </span>
+                      </div>
+                  
+                      <div class="input-group date datepicker mr-2">
+                          <input type="text" id="datepicker-end" name="end_date" class="form-control" placeholder="To"> 
+                          <span class="input-group-addon input-group-append border-left">
+                              <span class="far fa-calendar input-group-text"></span>
+                          </span>
+                      </div>
+                  
+                      <button type="submit" class="btn btn-primary">Generate Report</button>
+                  </form>
+                  
+                  <!-- Error Message Display -->
+                  <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
+                  <div id="success-message" class="alert alert-success d-none" role="alert"></div>
+                  
+                  <!-- Include jQuery -->
+                  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                  
+                  <script>
+                    $(document).ready(function () {
+                      // Initialize Datepicker
+                      $('#datepicker-start, #datepicker-end').datepicker({
+                          format: 'yyyy-mm-dd',
+                          autoclose: true,
+                          todayHighlight: true
+                      });
+                  
+                      $("#salesReportForm").submit(function (e) {
+                          e.preventDefault(); // Prevent default form submission
+                  
+                          let startDate = $("#datepicker-start").val();
+                          let endDate = $("#datepicker-end").val();
+                  
+                          $.ajax({
+                              type: "GET",
+                              url: "{% url 'sales_reports' %}",
+                              data: { start_date: startDate, end_date: endDate }, // Remove CSRF token from GET request
+                              dataType: "json",
+                              headers: { "X-Requested-With": "XMLHttpRequest" },  // Ensure it's an AJAX request
+                              success: function (response) {
+                                  if (response.status === "success") {
+                                       window.open(response.pdf_url, "_blank");
+                                      $("#success-message").text("Report generated successfully!").removeClass("d-none");
+                                      $("#error-message").addClass("d-none");
+                                      
+                                      // Display sales data (example)
+                                      console.log(response.data);
+                                  }
+                              },
+                              error: function (xhr) {
+                                  let errorMessage = xhr.responseJSON?.message || "An error occurred. Please try again.";
+                                  $("#error-message").text(errorMessage).removeClass("d-none");
+                                  $("#success-message").addClass("d-none");
+                              }
+                          });
+                      });
+                  });
+                  
+                  </script>
+                  
+                  
+
+
+
+
+
+
+                  
 
 
 
@@ -342,14 +320,37 @@
 
 
 
-
-
-
-
-
-
-
+                  </div>
+                </div>
               </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              
+
+
+
+
+
+
+
+
+
+
             </div>
           </div>
         </div>

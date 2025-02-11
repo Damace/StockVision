@@ -6,22 +6,53 @@ from django.contrib.auth import logout
 
 def index(request):
     return render(request, 'users/index.html')  # Adjust path if necessary
+
+# def user_login(request):
+#     if request.method == "POST":
+#         username = request.POST["username"]
+#         password = request.POST["password"]
+#         user = authenticate(request, username=username, password=password)
+        
+#         if user is not None:
+#             login(request, user)
+#             context = {
+#             'username': username
+#             }
+#             return redirect("dashboard")
+#         else:
+#             messages.error(request, "Invalid username or password")
+            
+#     return redirect("index") 
+
+
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.shortcuts import render
+
 def user_login(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
+    if request.method == "POST" and request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
             login(request, user)
-            context = {
-            'username': username
-            }
-            return redirect("dashboard")
+            return JsonResponse({
+                'status': 'success',
+                'redirect_url': '/dashboard/',  # Redirect URL after successful login
+            })
         else:
-            messages.error(request, "Invalid username or password")
-            
-    return redirect("index") 
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Invalid username or password. Please try again.',
+            }, status=400)
+
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Invalid request.',
+    }, status=400)
+
 
 
 

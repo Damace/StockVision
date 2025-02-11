@@ -306,35 +306,26 @@ import datetime
 from .models import Product
 from django.utils.formats import number_format
 from reports.models import CompanyProfile
+from inventory.models import  Cargo
 
 
 def generate_pdf_report(request):
-    products = Product.objects.all()
+    cago_list =  Cargo.objects.all()
     company_details = CompanyProfile.objects.all()
     
         # Calculate total selling and buying price
-    total_selling_price = sum(p.selling_price * p.stock_quantity for p in products)
-    total_buying_price = sum(p.buying_price * p.stock_quantity for p in products)
-    possible_profit = total_selling_price - total_buying_price
-    total_received = sum(p.max_stock - p.stock_quantity for p in products)
-    total_shipped = sum(p.max_stock - p.stock_quantity for p in products)
-    net_movement = total_received - total_shipped
+
 
     today_date = datetime.date.today().strftime("%B %d, %Y")
     
     context = {
         "company_details":company_details,
-        "products": products,
-        "total_received": total_received,
-        "total_shipped": total_shipped,
-        "net_movement": net_movement,
-        "total_selling_price": total_selling_price,
-        "total_buying_price": total_buying_price,
-        "today_date": today_date,
-        "possible_profit": number_format(possible_profit, decimal_pos=2)
+        "cago_list":cago_list,
+         "today_date": today_date,
+
     }
     
-    template = get_template("stock/cargo_report.pdf")
+    template = get_template("stock/cargo_report.html")
     html_content = template.render(context)
     
     response = HttpResponse(content_type="application/pdf")
@@ -343,6 +334,9 @@ def generate_pdf_report(request):
     HTML(string=html_content).write_pdf(response)
     
     return response
+
+
+#################################################################################################
 
 
 def generate_pdf(request):

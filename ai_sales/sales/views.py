@@ -284,5 +284,226 @@ def sales_report(request):
 
     return render(request, "sales/sales_report.html", context)
 
+#####################################################################################
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from weasyprint import HTML
+import datetime
+from .models import Product
+from django.utils.formats import number_format
+from reports.models import CompanyProfile
+from inventory.models import  Cargo
+from django.shortcuts import render
+from django.db.models import Sum
+from django.utils.timezone import now, timedelta
+from .models import NewSale
+from datetime import datetime
+from django import forms
 
 
+# Form for Date Range Selection
+class DateRangeForm(forms.Form):
+    start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+
+
+def sales_report_(request):
+    today = now().date()
+    start_of_week = today - timedelta(days=today.weekday())  # Monday of current week
+    start_of_month = today.replace(day=1)  # First day of the month
+
+    # Fetch all sales records
+    all_sales = NewSale.objects.all().order_by('-date')
+
+    # Daily Sales
+    daily_sales = NewSale.objects.filter(date__date=today)
+    daily_total = daily_sales.aggregate(total=Sum('total_amount'))['total'] or 0
+
+    # Weekly Sales
+    weekly_sales = NewSale.objects.filter(date__date__gte=start_of_week)
+    weekly_total = weekly_sales.aggregate(total=Sum('total_amount'))['total'] or 0
+
+    # Monthly Sales
+    monthly_sales = NewSale.objects.filter(date__date__gte=start_of_month)
+    monthly_total = monthly_sales.aggregate(total=Sum('total_amount'))['total'] or 0
+
+    # Date Range Sales
+    form = DateRangeForm(request.GET)
+    date_range_sales = None
+    date_range_total = 0
+    itemized_sales = {}
+
+    if form.is_valid():
+        start_date = form.cleaned_data.get('start_date')
+        end_date = form.cleaned_data.get('end_date')
+        date_range_sales = NewSale.objects.filter(date__date__range=[start_date, end_date])
+        date_range_total = date_range_sales.aggregate(total=Sum('total_amount'))['total'] or 0
+
+        # Group sales by product and sum up quantities and total amount
+        itemized_sales = date_range_sales.values('product__product_name').annotate(
+            total_quantity=Sum('quantity'),
+            total_sales=Sum('total_amount')
+            ).order_by('-total_sales')
+
+    products = Product.objects.all()
+    company_details = CompanyProfile.objects.all()
+    total_selling_price = sum(p.selling_price * p.stock_quantity for p in products)
+    total_buying_price = sum(p.buying_price * p.stock_quantity for p in products)
+    possible_profit = total_selling_price - total_buying_price
+    total_received = sum(p.max_stock - p.stock_quantity for p in products)
+    total_shipped = sum(p.max_stock - p.stock_quantity for p in products)
+    net_movement = total_received - total_shipped
+
+    # today_date = datetime.date.today().strftime("%B %d, %Y")
+    
+    
+ 
+    context = {
+        "company_details":company_details,
+        "products": products,
+        "total_received": total_received,
+        "total_shipped": total_shipped,
+        "net_movement": net_movement,
+        "total_selling_price": total_selling_price,
+        "total_buying_price": total_buying_price,
+        # "today_date": today_date,
+        "possible_profit": possible_profit,
+        "all_sales": all_sales,
+        "daily_sales": daily_sales,
+        "daily_total": daily_total,
+        "weekly_sales": weekly_sales,
+        "weekly_total": weekly_total,
+        "monthly_sales": monthly_sales,
+        "monthly_total": monthly_total,
+        "date_range_sales": date_range_sales,
+        "date_range_total": date_range_total,
+        "itemized_sales": itemized_sales,
+        "form": form,
+    }
+    
+    template = get_template("sales/sales_report.html")
+    html_content = template.render(context)
+    
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = 'inline; filename="Stock_Report.pdf"'
+
+    HTML(string=html_content).write_pdf(response)
+    
+    return response
+
+
+
+import datetime
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.template.loader import get_template
+from weasyprint import HTML
+from sales.models import NewSale
+from reports.models import CompanyProfile 
+ 
+
+# def sales_reports(request):
+#     start_date = request.GET.get("start_date")
+#     end_date = request.GET.get("end_date")
+
+#     company_details = CompanyProfile.objects.all()
+
+
+#     if start_date and end_date:
+#         sales_list = NewSale.objects.filter(date__range=[start_date, end_date])
+#     else:
+#         sales_list = NewSale.objects.all()  
+
+#     total_sales = sum(NewSale.total_amount for NewSale in sales_list)
+
+#     today_date = datetime.date.today().strftime("%B %d, %Y")
+
+#     context = {
+#         "company_details": company_details,
+#         "sales_list": sales_list,
+#         "total_sales": total_sales,
+#         "today_date": today_date,
+#     }
+
+
+#     template = get_template("sales/sales_report2.html")
+#     html_content = template.render(context)
+
+  
+#     response = HttpResponse(content_type="application/pdf")
+#     response["Content-Disposition"] = 'inline; filename="sales_report.pdf"'
+
+#     HTML(string=html_content).write_pdf(response)
+
+#     return response
+
+
+
+import datetime
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.template.loader import get_template
+from weasyprint import HTML
+from sales.models import NewSale
+from reports.models import CompanyProfile 
+from django.urls import reverse
+
+def sales_reports(request):
+    if request.method == "GET":
+        start_date_str = request.GET.get("start_date")
+        end_date_str = request.GET.get("end_date")
+
+        # Ensure that dates are valid datetime.date objects
+        if start_date_str and end_date_str:
+            try:
+                start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d").date()
+                end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d").date()
+            except ValueError:
+                return JsonResponse({"status": "error", "message": "Invalid date format. Please use YYYY-MM-DD."}, status=400)
+        else:
+            return JsonResponse({"status": "error", "message": "Start and end dates are required."}, status=400)
+
+        # Fetch company details and sales data
+        company_details = CompanyProfile.objects.all()
+        sales_list = NewSale.objects.filter(date__range=[start_date, end_date])
+
+        # Check if no data is found in the selected date range
+        if not sales_list:
+            return JsonResponse({"status": "error", "message": "There is no data in the date range selected."}, status=404)
+
+        # Calculate total sales
+        total_sales = sum(NewSale.total_amount for NewSale in sales_list)
+
+        # Prepare context data
+        context = {
+            "company_details": company_details,
+            "sales_list": sales_list,
+            "total_sales": total_sales,
+            "today_date": datetime.date.today().strftime("%B %d, %Y"),
+        }
+
+        # Determine which template to use for regular or PDF report
+        template_name = "sales/sales_report2.html"
+        template = get_template(template_name)
+        html_content = template.render(context)
+
+        # Generate the PDF file if report_type is pdf
+        if request.GET.get("report_type") == "pdf":
+            response = HttpResponse(content_type="application/pdf")
+            response["Content-Disposition"] = 'inline; filename="sales_report.pdf"'
+            HTML(string=html_content).write_pdf(response)
+
+            # Return response with PDF file
+            return response
+
+        # If AJAX, return the URL for the generated report
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            pdf_url = reverse("sales_reports") + f"?start_date={start_date.strftime('%Y-%m-%d')}&end_date={end_date.strftime('%Y-%m-%d')}&report_type=pdf"
+            return JsonResponse({"status": "success", "pdf_url": pdf_url})
+
+        # Return regular HTML response for non-AJAX requests
+        return HttpResponse(html_content)
+
+    # Return an error if the request is not GET
+    return JsonResponse({"status": "error", "message": "Invalid request method."}, status=400)

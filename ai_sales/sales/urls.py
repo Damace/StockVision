@@ -9,6 +9,7 @@ from .views import save_sale
 from .views import add_sale
 from .views import sales_trends_chart
 from .views import sales_report
+from .views import sales_reports
 
 urlpatterns = [
     path('all_sales/', sales_list, name='all_sales'),
@@ -20,6 +21,6 @@ urlpatterns = [
     path("add-sale/", add_sale, name="add_sale"),
     path('sales-trends/', sales_trends_chart, name='sales_trends'),
     path('sales-report/', sales_report, name='sales_report'),
+    path('sales-reports/', sales_reports, name='sales_reports'),
 ]
-
 
