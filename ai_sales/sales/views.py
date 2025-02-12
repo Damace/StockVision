@@ -199,7 +199,7 @@ def sales_trends_chart(request):
     sales_values = [monthly_sales.get(m, 0) for m in months]
 
     # Plot the sales trend graph
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(8, 4.5))
     sns.barplot(x=[calendar.month_abbr[m] for m in months], y=sales_values, color='navy')
     plt.xlabel("Month")
     plt.ylabel("Total Sales")
@@ -306,6 +306,24 @@ from django import forms
 class DateRangeForm(forms.Form):
     start_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     end_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    
+    
+    
+def general_rpt(request):
+    # supplier = Supplier.objects.all()
+    # number_supplier = Supplier.objects.all().count()
+    # total_sales =  NewSale.objects.all().count()
+    
+    # context = {
+    #     "supplier": supplier,
+    #     "number_supplier": number_supplier,
+    #     "total_sales": total_sales,
+        
+      
+    # }
+    return render(request, 'sales/general_report.html')
+    
+    
 
 
 def sales_report_(request):
@@ -401,53 +419,8 @@ from django.template.loader import get_template
 from weasyprint import HTML
 from sales.models import NewSale
 from reports.models import CompanyProfile 
- 
-
-# def sales_reports(request):
-#     start_date = request.GET.get("start_date")
-#     end_date = request.GET.get("end_date")
-
-#     company_details = CompanyProfile.objects.all()
-
-
-#     if start_date and end_date:
-#         sales_list = NewSale.objects.filter(date__range=[start_date, end_date])
-#     else:
-#         sales_list = NewSale.objects.all()  
-
-#     total_sales = sum(NewSale.total_amount for NewSale in sales_list)
-
-#     today_date = datetime.date.today().strftime("%B %d, %Y")
-
-#     context = {
-#         "company_details": company_details,
-#         "sales_list": sales_list,
-#         "total_sales": total_sales,
-#         "today_date": today_date,
-#     }
-
-
-#     template = get_template("sales/sales_report2.html")
-#     html_content = template.render(context)
-
-  
-#     response = HttpResponse(content_type="application/pdf")
-#     response["Content-Disposition"] = 'inline; filename="sales_report.pdf"'
-
-#     HTML(string=html_content).write_pdf(response)
-
-#     return response
-
-
-
-import datetime
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template.loader import get_template
-from weasyprint import HTML
-from sales.models import NewSale
-from reports.models import CompanyProfile 
 from django.urls import reverse
+from Purchases_Expenses.models import Expense
 
 def sales_reports(request):
     if request.method == "GET":
@@ -474,6 +447,36 @@ def sales_reports(request):
 
         # Calculate total sales
         total_sales = sum(NewSale.total_amount for NewSale in sales_list)
+        
+        ######################################### GRAPH ############################################
+    
+        
+        monthly_sales = {}  # Ensure this dictionary is initialized
+        for sale in sales_list:
+            month = sale.date.month  # Extract month
+            if month in monthly_sales:
+                monthly_sales[month] += sale.total_amount
+            else:
+                monthly_sales[month] = sale.total_amount
+
+        months = list(range(start_date.month, end_date.month + 1))
+        sales_values = [monthly_sales.get(m, 0) for m in months]
+        # Generate the sales trend graph
+        plt.figure(figsize=(6, 4.5))
+        sns.barplot(x=[calendar.month_abbr[m] for m in months], y=sales_values, color='navy')
+        plt.xlabel("Month")
+        plt.ylabel("Total Sales")
+        plt.title(f"Sales Trends ({start_date.strftime('%B %d, %Y')} - {end_date.strftime('%B %d, %Y')})")
+        plt.tight_layout()
+        # Save the graph as an image
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches="tight")
+        buffer.seek(0)
+        graph_url = base64.b64encode(buffer.getvalue()).decode()
+        buffer.close()
+        # Pass graph and date range to template
+    
+        ####################################################################################
 
         # Prepare context data
         context = {
@@ -481,6 +484,9 @@ def sales_reports(request):
             "sales_list": sales_list,
             "total_sales": total_sales,
             "today_date": datetime.date.today().strftime("%B %d, %Y"),
+            "graph": f"data:image/png;base64,{graph_url}",
+            "start_date": start_date.strftime("%B %d, %Y"),
+            "end_date": end_date.strftime("%B %d, %Y"),
         }
 
         # Determine which template to use for regular or PDF report
@@ -507,3 +513,73 @@ def sales_reports(request):
 
     # Return an error if the request is not GET
     return JsonResponse({"status": "error", "message": "Invalid request method."}, status=400)
+
+
+def general(request):
+    if request.method == "GET":
+        start_date_str = request.GET.get("start_date")
+        end_date_str = request.GET.get("end_date")
+
+        # Ensure that dates are valid datetime.date objects
+        if start_date_str and end_date_str:
+            try:
+                start_date = datetime.datetime.strptime(start_date_str, "%Y-%m-%d").date()
+                end_date = datetime.datetime.strptime(end_date_str, "%Y-%m-%d").date()
+            except ValueError:
+                return JsonResponse({"status": "error", "message": "Invalid date format. Please use YYYY-MM-DD."}, status=400)
+        else:
+            return JsonResponse({"status": "error", "message": "Start and end dates are required."}, status=400)
+
+        # Fetch company details and sales data
+        company_details = CompanyProfile.objects.all()
+        sales_list = NewSale.objects.filter(date__range=[start_date, end_date])
+        expense_list = Expense.objects.filter(date__range=[start_date, end_date])
+
+        # Check if no data is found in the selected date range
+        if not sales_list:
+            return JsonResponse({"status": "error", "message": "There is no data in the date range selected."}, status=404)
+
+        # Calculate total sales
+        total_sales = sum(NewSale.total_amount for NewSale in sales_list)
+        total_expense = sum(Expense.amount for Expense in expense_list)
+        
+        profit =  total_sales - total_expense 
+        
+        context = {
+            "company_details": company_details,
+            "sales_list": sales_list,
+            "total_sales": total_sales,
+            "expense_list":expense_list,
+            "total_expense":total_expense,
+            "profit":profit,
+            "today_date": datetime.date.today().strftime("%B %d, %Y"),
+            "start_date": start_date.strftime("%B %d, %Y"),
+            "end_date": end_date.strftime("%B %d, %Y"),
+        }
+
+        # Determine which template to use for regular or PDF report
+        template_name = "sales/general_report2.html"
+        template = get_template(template_name)
+        html_content = template.render(context)
+
+        # Generate the PDF file if report_type is pdf
+        if request.GET.get("report_type") == "pdf":
+            response = HttpResponse(content_type="application/pdf")
+            response["Content-Disposition"] = 'inline; filename="General_report.pdf"'
+            HTML(string=html_content).write_pdf(response)
+
+            # Return response with PDF file
+            return response
+
+        # If AJAX, return the URL for the generated report
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            pdf_url = reverse("general") + f"?start_date={start_date.strftime('%Y-%m-%d')}&end_date={end_date.strftime('%Y-%m-%d')}&report_type=pdf"
+            return JsonResponse({"status": "success", "pdf_url": pdf_url})
+
+        # Return regular HTML response for non-AJAX requests
+        return HttpResponse(html_content)
+
+    # Return an error if the request is not GET
+    return JsonResponse({"status": "error", "message": "Invalid request method."}, status=400)
+
+

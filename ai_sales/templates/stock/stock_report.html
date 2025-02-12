@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{% load static %}
+{% load humanize %} {% load static %}
 
 <html lang="en">
   <head>
@@ -102,33 +102,15 @@
   <body>
     <div style="display: flex; align-items: center; padding: 5px">
       {% load static %}
-      <!-- Logo on the left -->
-      <div style="flex: 0 0 auto">
-        <img src="{{ logo_url }}" alt="School Logo" style="height: 100px" />
-      </div>
-      <!-- Title in the center -->
-      <div style="flex: 1; text-align: center">
-        <h2 style="margin: 0">COMPANY TITLE</h2>
-        <small style="display: block"
-          >P.O Box 193 Dar | Mobile: (255) 713448417</small
-        >
-        <small style="display: block">Email: dar@gmail.com</small>
-        <h2 style="margin-top: 20px">
-          <small>STOCK REPORT<br /> </small>
-        </h2>
-      </div>
     </div>
 
     <div
       style="display: flex; justify-content: space-between; width: 100%"
     ></div>
-    <hr style="flex-grow: 10; margin: 0 10px;width=100%" />
-    <hr style="flex-grow: 20; margin: 0 10px;width=100%" />
 
     <h2></h2>
+    <p><strong>AVAILABLE STOCK LIST </strong></p>
     <p><strong>Date:</strong> {{ today_date }}</p>
-
-    <h3>Inventory Overview</h3>
     <table width="100%">
       <thead>
         <tr>
@@ -146,8 +128,8 @@
         <tr>
           <td>{{ product.product_name }}</td>
           <td>{{ product.category }}</td>
-          <td>{{ product.buying_price}}</td>
-          <td>{{ product.selling_price}}</td>
+          <td>{{ product.buying_price|floatformat:2|intcomma}}</td>
+          <td>{{ product.selling_price|floatformat:2|intcomma}}</td>
           <td>{{ product.stock_quantity }}</td>
         </tr>
         {% endfor %}
@@ -162,9 +144,9 @@
           <th>Possible Profit</th>
         </tr>
         <tr>
-          <td>{{ total_buying_price}}</td>
-          <td>{{ total_selling_price}}</td>
-          <td>{{ possible_profit }}</td>
+          <td>{{ total_buying_price|floatformat:2|intcomma}}</td>
+          <td>{{ total_selling_price|floatformat:2|intcomma}}</td>
+          <td>{{ possible_profit|floatformat:2|intcomma}}</td>
         </tr>
       </table>
     </div>
@@ -177,7 +159,7 @@
       </div>
       <div class="signature">
         <p>______________________</p>
-        <p><strong>Prepared by:</strong> Alex Mwakalikamo</p>
+        <p><strong>Prepared by:</strong> Admin</p>
       </div>
     </div>
   </body>

@@ -1,0 +1,280 @@
+{% extends 'base.html' %} {% block content %} {% include 'include/header.html'%}
+{% include 'include/sidebar.html' %}
+
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">
+        <i class="fa fa-chart-bar text-danger md-lg"></i> General Report
+
+      </h3>
+
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">General Report</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-0"><strong style="color:grey">Total Sales</strong></h4>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-inline-block pt-3">
+                <div class="d-md-flex">
+                  <h2 class="mb-0">{{total_sales}}</h2>
+                  <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
+                    <i class="far fa-clock text-muted"></i>
+                    <small class="ml-1 mb-0">Updated: 9:10am</small>
+                  </div>
+                </div>
+                <small class="text-gray"></small>
+              </div>
+              <div class="d-inline-block">
+                <i class="fa fa-shopping-cart text-success icon-md"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 grid-margin">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title mb-0"><strong style="color:grey">Stock quantity </strong></h4>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-inline-block pt-3">
+                <div class="d-md-flex">
+                  <h2 class="mb-0">{{products_list}}</h2>
+                  <div class="d-flex align-items-center ml-md-2 mt-2 mt-md-0">
+                    <i class="far fa-clock text-muted"></i>
+                    <small class="ml-1 mb-0">Updated: 05:42pm</small>
+                  </div>
+                </div>
+                <small class="text-gray"></small>
+              </div>
+              <div class="d-inline-block">
+                <i class="fas fa-shopping-cart text-danger icon-lg"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 grid-margin stretch-card">
+      <div
+        class="modal fade"
+        id="exampleModal-2"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel-2"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4><i class="fas fa-plus-circle"></i> New Sales</h4>
+            </div>
+            <div class="modal-body">
+
+              <form id="sale-form" class="form-sample">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Customer <span style="color: red;">*</span></label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="customer_name" id="customer_name" placeholder="Enter customer name" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Product Name <span style="color: red;">*</span></label>
+                            <div class="col-sm-9">
+                              <select
+                                class="js-example-basic-single w-100"
+                                id="category-select"
+                                name="category"
+                              >
+                                <option value="">-- Select a Category --</option>
+                                {% for product in products %}
+                                <option value="{{ product.id }}">
+                                  {{ product.name }}
+                                </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Price <span style="color: red;">*</span></label>
+                            <div class="col-sm-9">
+                                <input class="form-control" name="price" id="price" placeholder="Enter price" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Quantity <span style="color: red;">*</span></label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="quantity" id="quantity" placeholder="Enter quantity" required />
+                    </div>
+                </div>
+            
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Discount</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="discount" id="discount" placeholder="Enter discount percentage" />
+                    </div>
+                </div>
+            
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Total</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" name="total" id="total" placeholder="Total amount" readonly />
+                    </div>
+                </div>
+            
+                <button type="submit" class="btn btn-primary">Submit Sale</button>
+            </form>
+
+              <!-- Success Message -->
+              <div
+              id="success_message"
+              style="display: none"
+              class="alert alert-success mt-3 form-control"
+            >
+              Category added successfully!
+            </div>
+            <div
+              id="danger_message"
+              style="display: none"
+              class="alert alert-danger mt-3"
+            >
+              Category Exists
+            </div>
+            
+        
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-success">Submit</button>
+                <button
+                  type="button"
+                  class="btn btn-light"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+
+
+              <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Select date Ranges</h4>
+                    <p class="card-description"></p>
+
+
+                    <form id="salesReportForm" class="form-inline">
+                      {% csrf_token %}
+                      
+                      <div class="input-group date datepicker mr-2">
+                          <input type="text" id="datepicker-start" name="start_date" class="form-control" placeholder="From">
+                          <span class="input-group-addon input-group-append border-left">
+                              <span class="far fa-calendar input-group-text"></span>
+                          </span>
+                      </div>
+                  
+                      <div class="input-group date datepicker mr-2">
+                          <input type="text" id="datepicker-end" name="end_date" class="form-control" placeholder="To"> 
+                          <span class="input-group-addon input-group-append border-left">
+                              <span class="far fa-calendar input-group-text"></span>
+                          </span>
+                      </div>
+                  
+                      <button type="submit" class="btn btn-primary">Generate Report</button>
+                  </form>
+                  
+                  <!-- Error Message Display -->
+                  <div id="error-message" class="alert alert-danger d-none" role="alert"></div>
+                  <div id="success-message" class="alert alert-success d-none" role="alert"></div>
+                  
+                  <!-- Include jQuery -->
+                  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                  
+                  <script>
+                    $(document).ready(function () {
+                      // Initialize Datepicker
+                      $('#datepicker-start, #datepicker-end').datepicker({
+                          format: 'yyyy-mm-dd',
+                          autoclose: true,
+                          todayHighlight: true
+                      });
+                  
+                      $("#salesReportForm").submit(function (e) {
+                          e.preventDefault(); // Prevent default form submission
+                  
+                          let startDate = $("#datepicker-start").val();
+                          let endDate = $("#datepicker-end").val();
+                  
+                          $.ajax({
+                              type: "GET",
+                              url: "{% url 'general' %}",
+                              data: { start_date: startDate, end_date: endDate }, // Remove CSRF token from GET request
+                              dataType: "json",
+                              headers: { "X-Requested-With": "XMLHttpRequest" },  // Ensure it's an AJAX request
+                              success: function (response) {
+                                  if (response.status === "success") {
+                                       window.open(response.pdf_url, "_blank");
+                                      $("#success-message").text("Report generated successfully!").removeClass("d-none");
+                                      $("#error-message").addClass("d-none");
+                                      
+                                      // Display sales data (example)
+                                      console.log(response.data);
+                                  }
+                              },
+                              error: function (xhr) {
+                                  let errorMessage = xhr.responseJSON?.message || "An error occurred. Please try again.";
+                                  $("#error-message").text(errorMessage).removeClass("d-none");
+                                  $("#success-message").addClass("d-none");
+                              }
+                          });
+                      });
+                  });
+                  
+                  </script>
+            
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+</div>

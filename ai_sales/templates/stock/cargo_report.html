@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-{% load static %}
+{% load humanize %} {% load static %}
 
 <html lang="en">
   <head>
@@ -9,7 +9,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>Stock Report</title>
+    <title>Cargo Report</title>
     <link
       href="{% static 'vendors/iconfonts/font-awesome/css/all.min.css' %}"
       rel="stylesheet"
@@ -102,30 +102,14 @@
   <body>
     <div style="display: flex; align-items: center; padding: 5px">
       {% load static %}
-      <!-- Logo on the left -->
-      <div style="flex: 0 0 auto">
-        <img src="{{ logo_url }}" alt="School Logo" style="height: 100px" />
-      </div>
-      <!-- Title in the center -->
-      <div style="flex: 1; text-align: center">
-        <h2 style="margin: 0">COMPANY TITLE</h2>
-        <small style="display: block"
-          >P.O Box 193 Dar | Mobile: (255) 713448417</small
-        >
-        <small style="display: block">Email: dar@gmail.com</small>
-        <h2 style="margin-top: 20px">
-          <small>CARGO REPORT<br /> </small>
-        </h2>
-      </div>
     </div>
 
     <div
       style="display: flex; justify-content: space-between; width: 100%"
     ></div>
-    <hr style="flex-grow: 10; margin: 0 10px;width=100%" />
-    <hr style="flex-grow: 20; margin: 0 10px;width=100%" />
 
     <h2></h2>
+    <p><strong>CARGO REPORT </strong></p>
     <p><strong>Date:</strong> {{ today_date }}</p>
     <table width="100%">
       <thead>
@@ -148,12 +132,12 @@
           <td>{{ cago_list.cargo_name }}</td>
           <td>{{ cago_list.importer_name }}</td>
           <td>{{ cago_list.arrival_date}}</td>
-          <td>{{ cago_list.total_cost}}</td>
-          <td>{{ cago_list.amount_paid}}</td>
+          <td>{{ cago_list.total_cost|floatformat:2|intcomma}}</td>
+          <td>{{ cago_list.amount_paid|floatformat:2|intcomma}}</td>
 
-          <td>{{ cago_list.balance_due}}</td>
+          <td>{{ cago_list.balance_due|floatformat:2|intcomma}}</td>
           <td>{{ cago_list.payment_status}}</td>
-          <td>{{ cago_list.amount_paid}}</td>
+          <td>{{ cago_list.amount_paid|floatformat:2|intcomma}}</td>
         </tr>
         {% endfor %}
       </tbody>
