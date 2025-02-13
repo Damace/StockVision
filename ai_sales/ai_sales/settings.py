@@ -1,4 +1,5 @@
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -101,6 +102,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+DATABASES["default"] = dj_database_url.parse("postgresql://stock_vision_user:ApFR5LCCZBldNFIU15ZS8cyl26UBvTwG@dpg-cun6pirqf0us73fak6s0-a.oregon-postgres.render.com/stock_vision")
 
 
 # Password validation
