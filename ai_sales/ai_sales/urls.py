@@ -8,6 +8,7 @@ from users.views import permission_redirect
 from customers.views import customers_list
 # from sales.views import orders_list
 from users.views import dashboard
+from customadmin.admin import custom_admin_site
 
 urlpatterns = [
 
@@ -15,6 +16,8 @@ urlpatterns = [
     path('permission/<str:perm_name>/', permission_redirect, name='permission_redirect'),
     path("logout/", user_logout, name="logout"),
     path('admin/', admin.site.urls),
+    path('admin/', custom_admin_site.urls), 
+    # path('customadmin/', custom_admin_site.urls), 
     path('customers/', include('customers.urls')),
     path('customers/', customers_list, name="customers_list"),
     # path('orders/', orders_list, name="orders_list"),

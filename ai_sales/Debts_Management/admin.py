@@ -15,7 +15,7 @@ class SupplierDebtAdmin(admin.ModelAdmin):
     list_filter = ('status', 'due_date')
     search_fields = ('supplier_name', 'amount_due')
 
-@admin.register(DebtPaymentTracking)
+# @admin.register(DebtPaymentTracking)
 class DebtPaymentTrackingAdmin(admin.ModelAdmin):
     list_display = ('debt', 'amount_paid', 'payment_date', 'method')
     list_filter = ('payment_date', 'method')

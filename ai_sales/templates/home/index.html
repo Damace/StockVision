@@ -21,34 +21,60 @@
               <div class="card card-statistics">
                 <div class="card-body">
                   <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                      
+
+                    <div class="statistics-item">
+                        <p>
+                          <i class="fa fa-cubes"></i> 
+                          Available Stock </p>
+                          <h2>{{products_list}}</h2>
+                          <a class="nav-link" href="/products/"> <label class="badge badge-outline-success badge-pill"  style="cursor:pointer">View</label></a>
+                      </div>
+
+                        
                       <div class="statistics-item">
                         <p>
-                          <i class="icon-sm fa fa-user mr-2"></i>
-                          New users
+                          <i class="icon-sm fa fa-shopping-cart mr-2"></i>
+                          Total Sales
                         </p>
-                        <h2>3</h2>
-                        <label class="badge badge-outline-success badge-pill">2.7% increase</label>
+                        <h2>{{total_sales}}</h2>
+                        <a class="nav-link" href="/all_sales"><label class="badge badge-outline-danger badge-pill" style="cursor:pointer">View</label></a>
                       </div>
+
+
                       <div class="statistics-item">
                         <p>
                           <i class="icon-sm fas fa-hourglass-half mr-2"></i>
-                          Valid Job Advatiziments
+                          Debts
                         </p>
-                        <h2>123.50</h2>
-                        <label class="badge badge-outline-danger badge-pill">30% decrease</label>
+                        <h2>{{total_debts}}</h2>
+                        <a class="nav-link" href="/supplier"><label class="badge badge-outline-danger badge-pill"  style="cursor:pointer">View</label></a>
                       </div>
+
+
+
                       <div class="statistics-item">
                         <p>
-                          <i class="icon-sm fas fa-cloud-download-alt mr-2"></i>
-                          Fake Job Advatiziments
+                          <i class="fa fa-truck"></i>
+                            Registered Suppliers
                         </p>
-                        <h2>3500</h2>
-                        <label class="badge badge-outline-success badge-pill">12% increase</label>
+                        <h2>{{supplier_list}}</h2>
+                        <a class="nav-link" href="/supplier_list"> <label class="badge badge-outline-danger badge-pill"  style="cursor:pointer">View</label></a>
                       </div>
-                      
-                      
+
+
+
+
                      
-                  </div>
+                      <div class="statistics-item">
+                        <p>
+                          <i class="fa fa-list-alt"></i>
+                          General Reports
+                        </p>
+                        <h2> <i class="fa fa-list-alt"></i></h2>
+                        <label class="badge badge-outline-success badge-pill"  style="cursor:pointer">View</label>
+                      </div>  
+                  </div>   
                 </div>
               </div>
             </div>
@@ -56,13 +82,11 @@
           <div class="row">
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body">
+                <div class="card-body" align="left">
                   <h4 class="card-title">
-                   
-                    Job Advatiziments trends
+                    <strong> Stock trending per product </strong>
                   </h4>
-                  <canvas id="orders-chart"></canvas>
-                  <div id="orders-chart-legend" class="orders-chart-legend"></div>                  
+                  <img src="data:image/png;base64,{{ chart }}" alt="Stock Graph" />
                 </div>
               </div>
             </div>
@@ -71,13 +95,14 @@
                 <div class="card-body">
                   <h4 class="card-title">
                    
-                    Relationship between Fake and Real Job Advatiziments
+                    <strong>All Sales</strong>
                   </h4>
-                
-                  <canvas id="sales-chart"></canvas>
+                  <canvas id="orders-chart"></canvas>
+                  <div id="orders-chart" class="orders-chart-legend"></div>                  
                 </div>
               </div>
             </div>
+            
           </div>
          
         </div>
@@ -86,7 +111,7 @@
         <footer class="footer">
           <div class="d-sm-flex justify-content-center justify-content-sm-between">
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2018. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="far fa-heart text-danger"></i></span>
+           
           </div>
         </footer>
         <!-- partial -->

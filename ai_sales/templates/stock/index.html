@@ -1,6 +1,39 @@
 {% extends 'base.html' %} {% block content %} {% include 'include/header.html'%}
 {% include 'include/sidebar.html' %}
+{% load humanize %} 
 
+
+
+
+
+<style>
+  .contacts {
+    text-align: center; /* Center contacts */
+  }
+  table {
+    width: 100%;
+    margin: 20px 0;
+  }
+  th,
+  td {
+
+    padding: 8px;
+    text-align: left;
+    max-width: 150px; /* Limit maximum width */
+    overflow-wrap: break-word; /* Allow words to break */
+    word-break: break-word; /* Break long words */
+    white-space: normal; /* Allow text to wrap */
+    height: auto; /* Allow height to adjust */
+  }
+
+  td.subject {
+    max-width: 200px; /* Set a specific max width for the subject column */
+  }
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+</style>
 <!-- partial -->
 <div class="main-panel">
   <div class="content-wrapper">
@@ -94,21 +127,18 @@
                     <i class="fas fa-chart-bar"></i>&nbsp Stock Analysis
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a
-                    class="dropdown-item font-weight-medium"
-                    href="/generate_product_pdf"
-                  >
-                    <i class="fas fa-boxes"></i>&nbsp stocktake
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item font-weight-medium" href="#">
-                    <i class="fas fa-file-alt"></i>&nbsp Stock Report
-                  </a>
+                
+                 
                 </div>
               </div>
             </li>
 
-     
+
+
+
+
+
+
 
             <div class="table-responsive">
               <table id="order-listing" class="table">
@@ -126,8 +156,8 @@
                   <tr>
                     <td>{{ product.product_name }}</td>
                     <td>{{ product.category.name }}</td>
-                    <td>{{ product.buying_price }}</td>
-                    <td>{{ product.selling_price }}</td>
+                    <td>{{ product.buying_price|floatformat:2|intcomma }}</td>
+                    <td>{{ product.selling_price|floatformat:2|intcomma }}</td>
                     <td>
                       {% if product.stock_quantity <= product.critical_threshold %}
                       <label class="badge badge-danger badge-pill">

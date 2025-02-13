@@ -7,22 +7,46 @@ from .models import NewSale
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse
 from .models import Product  # Ensure you import your Product model
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import io
+import urllib
+import base64
+from django.shortcuts import render
+from inventory.models import Product
 
 
 @login_required
 @permission_required('sales.view_sales', raise_exception=True)
+
 def sales_dashboard(request):
-    sales = Sale.objects.all()
-    total_sales = sales.count()
-    total_revenue = sum(sale.amount for sale in sales)
-    
-    context = {
+        products = Product.objects.all()
+        df = pd.DataFrame(list(products.values("product_name", "stock_quantity")))
+        plt.figure(figsize=(10, 5))
+        sns.barplot(x="stock_quantity", y="product_name", data=df, palette="coolwarm")
+        plt.xlabel("Stock Quantity", fontsize=10, fontweight="bold", color="darkblue")
+        plt.ylabel("Product Name", fontsize=10, fontweight="bold", color="darkblue")
+        plt.title("Stock Trends per Product", fontsize=16, fontweight="bold", color="#4B0082",loc="center", pad=20)
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format="png")
+        buffer.seek(0)
+        
+        image_base64 = base64.b64encode(buffer.getvalue()).decode()
+        buffer.close()
+        
+        sales = Sale.objects.all()
+        total_sales = sales.count()
+        total_revenue = sum(sale.amount for sale in sales)
+        
+        context = {
         'sales': sales,
         'total_sales': total_sales,
         'total_revenue': total_revenue,
-    }
-    
-    return render(request, 'sales/sales_dashboard.html', context)
+        "chart": image_base64,
+        
+        }
+        return render(request, 'sales/sales_dashboard.html', context)
 
 
 def sales_list(request):
@@ -39,12 +63,6 @@ def sales_list(request):
         }
     
     return render(request, 'sales/index.html', context)
-
-
-
-
-
-
 
 
 def new_sales(request):

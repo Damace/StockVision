@@ -375,3 +375,6 @@ def generate_pdf(request):
     HTML(string=html_content).write_pdf(response)
     
     return response
+
+
+

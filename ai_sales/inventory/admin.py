@@ -65,8 +65,8 @@ class CargoAdmin(admin.ModelAdmin):
     search_fields = ('cargo_name', 'importer_name')
 
 admin.site.register(Cargo, CargoAdmin)
-admin.site.register(StockAdjustment, StockAdjustmentAdmin)
-admin.site.register(StockTransfer, StockTransferAdmin)
+# admin.site.register(StockAdjustment, StockAdjustmentAdmin)
+# admin.site.register(StockTransfer, StockTransferAdmin)
 admin.site.register(Supplier, SupplierAdmin)
-admin.site.register(LowStockAlert, LowStockAlertAdmin)
-admin.site.register(ExpiryManagement, ExpiryManagementAdmin)
+# admin.site.register(LowStockAlert, LowStockAlertAdmin)
+# admin.site.register(ExpiryManagement, ExpiryManagementAdmin)

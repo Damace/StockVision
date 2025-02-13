@@ -43,7 +43,7 @@ class StockAdjustment(models.Model):
     adjustment_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Adjustment for {self.product.name}"
+        return f"Adjustment for {self.product.product_name}"
 
 class StockTransfer(models.Model):
     from_location = models.CharField(max_length=100)

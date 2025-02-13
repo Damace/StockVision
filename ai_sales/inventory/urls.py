@@ -28,5 +28,5 @@ urlpatterns = [
     path('delete_cargo/<int:cargo_id>/', views.delete_cargo, name='delete_cargo'),
     path('generate_pdf_report/', views.generate_pdf_report, name='generate_pdf_report'),
     path("download-stock-report/", generate_pdf, name="download_stock_report"),
-   
+  
 ]

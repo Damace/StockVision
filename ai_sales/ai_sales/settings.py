@@ -26,8 +26,10 @@ SECRET_KEY = 'django-insecure-cwr(0&(my03w@-iio^hk=p3$5o7#k)q5fz@xx^eq63dj+u+mb$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://9f58-41-59-180-180.ngrok-free.app"
+]
+ALLOWED_HOSTS = ["9f58-41-59-180-180.ngrok-free.app", "127.0.0.1", "localhost"]
 
 # Application definition
 
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     'Reports_Analysis',
     'backup',
      'debt',
+    # 'customadmin',
 ]
 
 MIDDLEWARE = [
