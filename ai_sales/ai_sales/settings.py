@@ -59,6 +59,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,10 +96,18 @@ WSGI_APPLICATION = 'ai_sales.wsgi.application'
 # STATIC_URL = '/static/'
 
 # The absolute path to the directory where collectstatic will collect static files for deployment
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Adjust if your static files are in a different folder
 
+
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT =  BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static")
+    
+    ] 
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFileStorage"
 
 
 
