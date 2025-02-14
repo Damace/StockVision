@@ -1,6 +1,7 @@
 from pathlib import Path
 import dj_database_url
 from decouple import config 
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -139,7 +140,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -148,3 +149,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.CustomUser'
 # settings.py
 LOGIN_REDIRECT_URL = 'home_page'  # URL name of the home page
+
+# The URL to use when referring to static files
+STATIC_URL = '/static/'
+
+# The absolute path to the directory where collectstatic will collect static files for deployment
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
