@@ -87,9 +87,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ai_sales.wsgi.application'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # This will work if 'static' is at the root of the project
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',  # This will work if 'static' is at the root of the project
+# ]
+
+# The URL to use when referring to static files
+# STATIC_URL = '/static/'
+
+# The absolute path to the directory where collectstatic will collect static files for deployment
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Adjust if your static files are in a different folder
+
 
 
 
@@ -150,8 +159,8 @@ AUTH_USER_MODEL = 'users.CustomUser'
 # settings.py
 LOGIN_REDIRECT_URL = 'home_page'  # URL name of the home page
 
-# The URL to use when referring to static files
-STATIC_URL = '/static/'
 
-# The absolute path to the directory where collectstatic will collect static files for deployment
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
