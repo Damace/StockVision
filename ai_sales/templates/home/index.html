@@ -1,9 +1,6 @@
 {% extends 'base.html' %} 
 {% block content %}
 
-
-
-
 {% include 'include/header.html' %}
 
 {% include 'include/sidebar.html' %}
@@ -50,10 +47,7 @@
                         <h2>{{total_debts}}</h2>
                         <a class="nav-link" href="/supplier"><label class="badge badge-outline-danger badge-pill"  style="cursor:pointer">View</label></a>
                       </div>
-
-
-
-                      <div class="statistics-item">
+                        <div class="statistics-item">
                         <p>
                           <i class="fa fa-truck"></i>
                             Registered Suppliers
@@ -72,7 +66,7 @@
                           General Reports
                         </p>
                         <h2> <i class="fa fa-list-alt"></i></h2>
-                        <label class="badge badge-outline-success badge-pill"  style="cursor:pointer">View</label>
+                        <a class="nav-link" href="/general_rpt"><label class="badge badge-outline-success badge-pill"  style="cursor:pointer">View</label></a></li> 
                       </div>  
                   </div>   
                 </div>
@@ -80,9 +74,9 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 grid-margin stretch-card">
+            <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body" align="left">
+                <div class="card-body" align="center">
                   <h4 class="card-title">
                     <strong> Stock trending per product </strong>
                   </h4>
@@ -90,18 +84,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">
-                   
-                    <strong>All Sales</strong>
-                  </h4>
-                  <canvas id="orders-chart"></canvas>
-                  <div id="orders-chart" class="orders-chart-legend"></div>                  
-                </div>
-              </div>
-            </div>
+            
             
           </div>
          

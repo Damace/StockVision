@@ -70,10 +70,10 @@ def user_logout(request):
 def dashboard(request):
     products = Product.objects.all()
     df = pd.DataFrame(list(products.values("product_name", "stock_quantity")))
-    plt.figure(figsize=(7, 5))
+    plt.figure(figsize=(10, 5))
     sns.barplot(x="stock_quantity", y="product_name", data=df, palette="coolwarm")
-    plt.xlabel("Stock Quantity", fontsize=10, fontweight="bold", color="darkblue")
-    plt.ylabel("Product Name", fontsize=10, fontweight="bold", color="darkblue")
+    plt.xlabel("Stock Quantity", fontsize=8, fontweight="bold", color="darkblue")
+    plt.ylabel("Product Name", fontsize=8, fontweight="bold", color="darkblue")
    
     buffer = io.BytesIO()
     plt.savefig(buffer, format="png")
