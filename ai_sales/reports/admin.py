@@ -8,4 +8,4 @@ class CompanyProfileAdmin(admin.ModelAdmin):
     list_filter = ('company_name',)
 
 # Register the model with the admin site
-admin.site.register(CompanyProfile, CompanyProfileAdmin)
+# admin.site.register(CompanyProfile, CompanyProfileAdmin)

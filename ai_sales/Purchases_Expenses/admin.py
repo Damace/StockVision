@@ -24,7 +24,7 @@ class PurchaseHistoryAdmin(admin.ModelAdmin):
     list_filter = ('update_date', 'status')
 
 # Register your models with the corresponding admin classes
-admin.site.register(Purchase, PurchaseAdmin)
-admin.site.register(SupplierPayment, SupplierPaymentAdmin)
-admin.site.register(Expense, ExpenseAdmin)
-admin.site.register(PurchaseHistory, PurchaseHistoryAdmin)
+# admin.site.register(Purchase, PurchaseAdmin)
+# admin.site.register(SupplierPayment, SupplierPaymentAdmin)
+# admin.site.register(Expense, ExpenseAdmin)
+# admin.site.register(PurchaseHistory, PurchaseHistoryAdmin)
