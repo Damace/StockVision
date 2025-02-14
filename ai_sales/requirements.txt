@@ -9,6 +9,7 @@ dj-database-url==2.3.0
 Django==5.1.5
 django-adminlte-ui==2.1.1
 django-grappelli==4.0.1
+django-jazzmin==3.0.1
 fonttools==4.56.0
 gunicorn==23.0.0
 joblib==1.4.2
