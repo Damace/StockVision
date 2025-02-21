@@ -3,6 +3,7 @@ from inventory.models import Product
 from django.http import JsonResponse
 from inventory.models import Supplier
 from sales.models import NewSale
+from debt.models import Expenditure
 
 from .models import Purchase, SupplierPayment, Expense, PurchaseHistory
 
@@ -16,10 +17,10 @@ def supplier_payment_list(request):
 
 
 def expense_list(request):
-    expenses = Expense.objects.all()
-    total_expenses = Expense.objects.all()
+    expenses = Expenditure.objects.all()
+    total_expenses = Expenditure.objects.all()
     products = Product.objects.all() 
-    expenses_all = Expense.objects.all().count()
+    expenses_all = Expenditure.objects.all().count()
     products_list = Product.objects.all().count()
     total_sales = NewSale.objects.all().count()
     

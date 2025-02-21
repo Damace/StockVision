@@ -15,6 +15,7 @@ import urllib
 import base64
 from django.shortcuts import render
 from inventory.models import Product
+from debt.models import Expenditure
 
 
 @login_required
@@ -318,6 +319,8 @@ from django.utils.timezone import now, timedelta
 from .models import NewSale
 from datetime import datetime
 from django import forms
+from debt.models import Expenditure
+
 
 
 # Form for Date Range Selection
@@ -438,7 +441,7 @@ from weasyprint import HTML
 from sales.models import NewSale
 from reports.models import CompanyProfile 
 from django.urls import reverse
-from Purchases_Expenses.models import Expense
+
 
 def sales_reports(request):
     if request.method == "GET":
@@ -551,7 +554,7 @@ def general(request):
         # Fetch company details and sales data
         company_details = CompanyProfile.objects.all()
         sales_list = NewSale.objects.filter(date__range=[start_date, end_date])
-        expense_list = Expense.objects.filter(date__range=[start_date, end_date])
+        expense_list = Expenditure.objects.filter(date__range=[start_date, end_date])
 
         # Check if no data is found in the selected date range
         if not sales_list:
@@ -559,7 +562,7 @@ def general(request):
 
         # Calculate total sales
         total_sales = sum(NewSale.total_amount for NewSale in sales_list)
-        total_expense = sum(Expense.amount for Expense in expense_list)
+        total_expense = sum(Expenditure.amount for Expenditure in expense_list)
         
         profit =  total_sales - total_expense 
         
